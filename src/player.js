@@ -23,7 +23,7 @@ var Player = function(parent, name, rect, asset)
         dodge: {
             delay: 10
         }
-    }
+    };
     
     return this;
 };

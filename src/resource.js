@@ -36,5 +36,5 @@ var g_resources = [
 
    {src:MUSIC_BACKGROUND},
    {src:MUSIC_VICTORY_BACKGROUND},
-   {src:EFFECT_BUTTON_CHICK}
+   {src:EFFECT_BUTTON_CHICK},
 ];

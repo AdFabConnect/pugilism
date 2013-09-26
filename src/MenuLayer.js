@@ -34,9 +34,15 @@ var MenuLayer = cc.Layer.extend({
     menuCallBack:function(sender){
         gSharedEngine.playEffect(EFFECT_BUTTON_CHICK);
         
-        var nextScene = cc.Scene.create();
-        var nextLayer = new LandscapeLayer();
+        var nextScene = cc.Scene.create(),
+            nextLayer = new LandscapeLayer(),
+            battleLayer = new BattleLayer();
+            
         nextScene.addChild(nextLayer);
+        nextScene.addChild(battleLayer);
+        
+        battleLayer.init();
+        
         cc.Director.getInstance().replaceScene(cc.TransitionSlideInT.create(0.4, nextScene));
         //gSharedEngine.setMusicVolume(1);
         //gSharedEngine.setEffectsVolume(1);

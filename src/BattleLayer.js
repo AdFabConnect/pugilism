@@ -42,6 +42,7 @@ var BattleLayer = cc.Layer.extend({
         
         this.myPlayer = new Player(
             this,
+            'test',
             {
                 x: this.playerBounds.width / 2,
                 y: this.playerBounds.height / 2,
@@ -50,6 +51,8 @@ var BattleLayer = cc.Layer.extend({
             },
             'res/player-blue.png'
         );
+        
+        this.nodeEvents({type: 'join', playerName: 'test'});
         
         this.ready();
         
