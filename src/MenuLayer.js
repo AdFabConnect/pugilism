@@ -34,6 +34,27 @@ var MenuLayer = cc.Layer.extend({
     menuCallBack:function(sender){
         gSharedEngine.playEffect(EFFECT_BUTTON_CHICK);
         
+        if(!socketLoaded) return;
+        this.socket = io.connect(serveurUrl);
+        this.socket.on('connect', this.nodeReady);
+    },
+    nodeReady: function()
+    {
+        console.log('ready');
+        
+        var self = this;
+        this.isPlaying = false;
+        
+        this.socket.emit('waiting', { playerName : player.name });
+        this.socket.on('action', function (action)
+        {
+            console.log(action);
+            self.isPlaying = true;
+            if(typeof action.end !== "undefined" && action.end !== null){
+                self.isPlaying = false;
+            }
+        });
+        
         var nextScene = cc.Scene.create(),
             nextLayer = new LandscapeLayer(),
             battleLayer = new BattleLayer();
