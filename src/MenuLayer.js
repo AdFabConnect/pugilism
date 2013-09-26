@@ -35,12 +35,12 @@ var MenuLayer = cc.Layer.extend({
         gSharedEngine.playEffect(EFFECT_BUTTON_CHICK);
         
         var nextScene = cc.Scene.create();
-        var nextLayer = new VictoryLayer();
+        var nextLayer = new LandscapeLayer();
         nextScene.addChild(nextLayer);
         cc.Director.getInstance().replaceScene(cc.TransitionSlideInT.create(0.4, nextScene));
-        gSharedEngine.setMusicVolume(1);
-        gSharedEngine.setEffectsVolume(1);
-        gSharedEngine.playMusic(MUSIC_VICTORY_BACKGROUND,true);
+        //gSharedEngine.setMusicVolume(1);
+        //gSharedEngine.setEffectsVolume(1);
+        //gSharedEngine.playMusic(MUSIC_VICTORY_BACKGROUND,true);
     }
 });
 
@@ -56,8 +56,8 @@ var PugilismScene = cc.Scene.extend({
         var layer = new MenuLayer;
         this.addChild(layer);
 
-        gSharedEngine.setMusicVolume(1);
-        gSharedEngine.setEffectsVolume(1);
-        gSharedEngine.playMusic(MUSIC_BACKGROUND,true);
+        //gSharedEngine.setMusicVolume(1);
+        //gSharedEngine.setEffectsVolume(1);
+        //gSharedEngine.playMusic(MUSIC_BACKGROUND,true);
     }
 });
