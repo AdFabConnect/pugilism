@@ -1,20 +1,20 @@
-var Keyboard = function ()
+var Keyboard = function (context)
 {
     'use strict';
     
-    this.promise;
+    this.context = context;
     
     return this;
 };
 
-Keyboard.prototype.start = function ()
+Keyboard.prototype.start = function (callback)
 {
     'use strict';
     
-    this.promise = new Promise();
+    this.callback = callback;
     this.bindEvent();
 
-    return this.promise;    
+    return;    
 };
 
 Keyboard.prototype.bindEvent = function ()
@@ -24,27 +24,38 @@ Keyboard.prototype.bindEvent = function ()
     var action,
         self = this;
     
-    document.getElementById('pugilismCanvas').addEventListener('keydown',function(e) {
-       switch(e.keyCode) {
-           case 81 : 
-	       action = 'punch';
-	       break;
-	   case 69 :
-         	action = 'kick';
-	       break;
-	   case 32 : 
-	       action = 'protect';
-	       break;
-	   case 13 :
-	       action = 'dodge';
-	       break;
-	   default :
-	       action = '';
-	       break;
-	}
-	 self.promise.resolve(action);
-	
+    document.getElementById('pugilismCanvas').addEventListener('keydown',function(e)
+    {
+        switch(e.keyCode)
+        {
+            case 81 : 
+                action = 'punch';
+                break;
+            case 69 :
+                action = 'kick';
+                break;
+            case 32 : 
+                action = 'protect';
+                break;
+            case 13 :
+                action = 'dodge';
+                break;
+            default :
+                action = '';
+                break;
+        }
+        
+        if(action !== '') {
+            self.sendAction(action);
+        }
     });
 
+    return;
+};
+
+Keyboard.prototype.sendAction = function (action)
+{
+    this.callback.call(this.context, action);
+    
     return;
 };

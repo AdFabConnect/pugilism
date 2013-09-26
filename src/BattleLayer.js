@@ -1,9 +1,17 @@
 var BattleLayer = cc.Layer.extend({
     isMouseDown:false,
-    playerOne:null,
-    playerTwo:null,
+    myPlayer:null,
+    remotePlayer:null,
+    playerBounds: {
+        width: 200,
+        height: 300
+    },
+    isPlaying:false,
 
-    init:function () {
+    init:function ()
+    {
+        'use strict';
+        
         this._super();
 
         /////////////////////////////
@@ -27,18 +35,76 @@ var BattleLayer = cc.Layer.extend({
         this.addChild(menu, 1);
         closeItem.setPosition(cc.p(size.width - 20, 20));
         */
-       
-       this.keyboard = new Keyboard();
-       
-       this.keyboard.start()
-        .then(function (type, key)
-        {
-            
-        });
         
-        this.playerOne = new Player(this, 'left');
-        this.playerTwo = new Player(this, 'right');
-       
+        this.keyboard = new Keyboard(this);
+        
+        this.screenSize = cc.Director.getInstance().getWinSize();
+        
+        this.myPlayer = new Player(
+            this,
+            {
+                x: this.playerBounds.width / 2,
+                y: this.playerBounds.height / 2,
+                width: this.playerBounds.width,
+                height: this.playerBounds.height
+            },
+            'res/player-blue.png'
+        );
+        
+        this.ready();
+        
         return true;
+    },
+    
+    ready: function(action)
+    {
+        'use strict';
+        
+        this.isPlaying = true;
+        this.myPlayer.start();
+        this.remotePlayer.start();
+       
+        this.keyboard.start(this.keyboarEvents);
+        
+        return;
+    },
+    
+    keyboarEvents: function(action)
+    {
+        'use strict';
+        
+        if(this.isPlaying) {
+            this.myPlayer.doAction(action);
+        }
+        
+        return;
+    },
+    
+    nodeEvents: function(action)
+    {
+        'use strict';
+        
+        if(action.type === 'join') {
+            this.remotePlayer = new Player(
+                this,
+                action.playerName,
+                {
+                    x: this.screenSize.width - (this.playerBounds.width / 2),
+                    y: this.playerBounds.height / 2,
+                    width: this.playerBounds.width,
+                    height: this.playerBounds.height
+                },
+                'res/player-purple.png'
+            );
+        }else if(action.type === 'action' && action.name === this.remotePlayer.name && this.isPlaying) {
+            this.remotePlayer.doAction(action);
+        }
+        
+        return;
+    },
+    
+    destroy: function ()
+    {
+        
     }
 });

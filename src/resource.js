@@ -1,10 +1,10 @@
-var s_playerOne = "res/player-blue.png",
-s_playerTwo = "res/player-purple.png";
+var s_playerBlue = "res/player-blue.png",
+s_playerPurple = "res/player-purple.png";
 
 var g_resources = [
     //image
-    {src:s_playerOne},
-    {src:s_playerTwo}
+    {src:s_playerBlue},
+    {src:s_playerPurple}
 
     //plist
 

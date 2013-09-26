@@ -1,48 +1,67 @@
-/**
- * 
- * @param {String} assets
- * @param {String} position
- */
-var Player = function (parent, assets, position)
+var Player = function(parent, name, rect, asset)
 {
     'use strict';
     
     this.promise = null;
-    this.sprite = cc.Sprite.create(assets);
-    this.screenSize = cc.Director.getInstance().getWinSize();
-    this.size = {
-        width: 200,
-        height: 300
-    };
+    this.name = name;
+    this.rect = rect;
+    this.parent = parent;
+    this.asset = asset;
+    this.paused = true;
     
-    // set x and y from string parameter position
-    if(position === 'left') {
-        this.sprite.setPosition(cc.p(0, this.screenSize.height - this.size.height));
-    }else {
-        this.sprite.setPosition(
-            cc.p(
-                this.screenSize.width - this.size.width,
-                this.screenSize.height - this.size.height
-            )
-        );
+    this.isPlaying = 0;
+    this.actions = {
+        kick: {
+            delay: 100
+        },
+        punch: {
+            delay: 100
+        },
+        protect: {
+            delay: 100
+        },
+        dodge: {
+            delay: 10
+        }
     }
     
     return this;
 };
 
-Player.prototype.start = function ()
+Player.prototype.start = function()
 {
     'use strict';
+
+    this.sprite = cc.Sprite.create(this.asset, cc.rect(0, 0, this.rect.width, this.rect.height));
+    this.sprite.setPosition(cc.p(this.rect.x, this.rect.y));
+    this.parent.addChild(this.sprite);
     
-    this.promise = new Promise();
-
-
-    return this.promise;    
+    cc.Director.getInstance().getScheduler().scheduleUpdateForTarget(this, 1, this.isRunning);
+    
+    return;
 };
 
-Player.prototype.bindEvent = function ()
+Player.prototype.doAction = function(action)
 {
     'use strict';
     
-    this.promise.resolve('mousedown', 'right');
+    if(typeof this.actions[action] === 'object' && this.isPlaying === 0) {
+        this.isPlaying = this.actions[action].delay + 1;
+    }
+    
+    return (this.isPlaying > 0) ? true : false;
+};
+
+Player.prototype.update = function(time)
+{
+    'use strict';
+    
+    if(this.isPlaying === 0) {
+        this.isRunning = false;
+    }else {
+        this.isPlaying--;
+        console.log('is playing : ' + this.isPlaying);
+    }
+    
+    return;
 };
