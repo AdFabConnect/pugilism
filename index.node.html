@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Pugilism</title>
+</head>
+    <body >
+        <input type="text" name="player-name" value="player name" class="player-name"/>
+        <br />
+        <button id="btn-start" onclick="player.requestConnection();">connect the game</button>
+        <button onclick="player.action();">hit</button>
+        <button onclick="player.win();">win</button>
+        <button onclick="player.replay();">replay</button>
+    </body>
+    <script src="config-front.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var socketLoaded = false;
+        var player = {
+            
+            name : 'player name',
+            
+            socket : null,
+            
+            isPlaying : false,
+            
+            requestConnection : function ()
+            {
+                if(!socketLoaded) return;
+                var btnStart = document.getElementById("btn-start");
+                btnStart.parentNode.removeChild(btnStart);
+                player.socket = io.connect(serveurUrl);
+                player.socket.on('connect', player.isConnected);
+            },
+            
+            isConnected : function ()
+            {
+                player.name = document.querySelector('.player-name').value;
+                player.socket.emit('waiting', { playerName : player.name });
+                player.socket.on('action', function (action)
+                {
+                    console.log(action);
+                    player.isPlaying = true;
+                    if(typeof action.end !== "undefined" && action.end !== null){
+                        player.isPlaying = false;
+                    }
+                });
+            },
+            
+            action : function ()
+            {
+                player.socket.emit('action', {
+                    type : 'hit'
+                });
+            },
+            
+            win : function ()
+            {
+                player.socket.emit('action', {
+                    type : 'win'
+                });
+            },
+            
+            replay : function ()
+            {
+                if(!player.isPlaying)
+                    player.socket.emit('waiting', { playerName : player.name });
+            }
+        };
+        
+        window.onload = function ()
+        {
+            var head = document.getElementsByTagName("head")[0];
+            var script = document.createElement("script"); 
+        
+            script.setAttribute("type", "text/javascript");
+            script.setAttribute("src", scriptSocketUrl);
+        
+            head.addEventListener("load", function (event)
+            {
+                if (event.target.nodeName === "SCRIPT") socketLoaded = true;
+            }, true);
+        
+            head.appendChild(script); 
+        }
+        
+    </script>
+</html>

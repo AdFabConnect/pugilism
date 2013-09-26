@@ -1,0 +1,9 @@
+{
+    "name": "pugilism"
+    ,"version": "0.0.1"
+    ,"private": true
+    ,"dependencies": {
+        "socket.io": "0.9.16"
+        ,"socket.io-client" : "0.9.16"
+    }
+}
