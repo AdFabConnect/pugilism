@@ -13,7 +13,7 @@ var EFFECT_BUTTON_CHICK  = "audio/effect_buttonClick.ogg";
 var g_resources = [
 
    {src:s_playerOne},
-   {src:s_playerTwo}
+   {src:s_playerTwo},
     
    {src:"res/background2.jpg"},
    {src:"res/bg_victory.jpg"},
