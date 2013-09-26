@@ -40,7 +40,10 @@
         appFiles:[
             'src/resource.js',
             'src/utils/promise.js',
+            'src/MenuLayer.js',
             'src/BattleLayer.js',
+            'src/LandscapeLayer.js',
+            'src/VictoryLayer.js',
             'src/decor.js',
             'src/keyboard.js',
             'src/player.js',
