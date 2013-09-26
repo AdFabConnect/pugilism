@@ -35,6 +35,9 @@ var BattleLayer = cc.Layer.extend({
         {
             
         });
+        
+        this.playerOne = new Player(this, 'left');
+        this.playerTwo = new Player(this, 'right');
        
         return true;
     }

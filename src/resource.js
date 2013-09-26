@@ -1,3 +1,4 @@
+
 var gSpriteFrameCache = cc.SpriteFrameCache.getInstance();
 
 var gSharedEngine = cc.AudioEngine.getInstance();
@@ -10,6 +11,7 @@ var MUSIC_VICTORY_BACKGROUND = "audio/black.mp3";
 var EFFECT_BUTTON_CHICK  = "audio/effect_buttonClick.ogg";
 
 var g_resources = [
+
    {src:s_playerOne},
    {src:s_playerTwo}
     
