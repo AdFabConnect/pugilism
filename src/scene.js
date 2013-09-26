@@ -1,4 +1,4 @@
-var PugilismScene = cc.Scene.extend({
+/*var PugilismScene = cc.Scene.extend({
     
     onEnter:function () {
         this._super();
@@ -7,4 +7,4 @@ var PugilismScene = cc.Scene.extend({
         this.addChild(layer);
     }
     
-});
+});*/
