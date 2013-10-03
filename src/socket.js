@@ -1,6 +1,8 @@
 var socketLoaded = false;
-window.onload = function ()
+var socketLoad = function ()
 {
+    var promise = new Promise();
+    
     var head = document.getElementsByTagName("head")[0];
     var script = document.createElement("script"); 
 
@@ -10,7 +12,10 @@ window.onload = function ()
     head.addEventListener("load", function (event)
     {
         if (event.target.nodeName === "SCRIPT") socketLoaded = true;
+        promise.resolve();
     }, true);
 
-    head.appendChild(script); 
+    head.appendChild(script);
+    
+    return promise;
 };

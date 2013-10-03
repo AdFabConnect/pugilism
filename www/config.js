@@ -7,5 +7,5 @@ module.exports = {
     DEBUG       : true,
     IO_LOG      : true,
     IO_ORIGINS  : '*:*',
-    server      : 'http://192.168.1.108:88/'
+    server      : 'http://192.168.1.103:88/'
 };

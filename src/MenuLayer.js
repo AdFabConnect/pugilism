@@ -1,56 +1,62 @@
 var MenuLayer = cc.Layer.extend({
 
-    ctor:function () {
+    ctor:function ()
+    {
         this._super();
         this.init();
     },
-    init:function () {
-        var bRet = false;
+    
+    init:function ()
+    {
+        var bRet = false
+            self = this;
         if (this._super()) {
-            var bgSprite = cc.Sprite.create("res/background2.jpg");
-            bgSprite.setPosition(cc.p(160,240));
-            this.addChild(bgSprite);
-
-            /*var logoSprite = cc.Sprite.create("res/logo.png");
-            logoSprite.setPosition(cc.p(160,320));
-            this.addChild(logoSprite);*/
-
-            var itemStartGame = cc.MenuItemImage.create(
-                "res/btn/btnStartGameNor.png",
-                "res/btn/btnStartGameDown.png",
-                this.menuCallBack,
-                this
-            );
-            itemStartGame.setPosition(cc.p(160, 100));
-
-            var menu = cc.Menu.create(itemStartGame);
-            menu.setPosition(cc.p(0, 0));
-            this.addChild(menu);
-
-            bRet = true;
+            
+            socketLoad()
+                .then(function ()
+                {
+                    var bgSprite = cc.Sprite.create("res/background2.jpg");
+                    bgSprite.setPosition(cc.p(160,240));
+                    self.addChild(bgSprite);
+        
+                    var itemStartGame = cc.MenuItemImage.create(
+                        "res/btn/btnStartGameNor.png",
+                        "res/btn/btnStartGameDown.png",
+                        self.menuCallBack,
+                        self
+                    );
+                    itemStartGame.setPosition(cc.p(160, 100));
+        
+                    var menu = cc.Menu.create(itemStartGame);
+                    menu.setPosition(cc.p(0, 0));
+                    self.addChild(menu);
+        
+                    bRet = true;
+                });
         }
         return bRet;
     },
+    
     menuCallBack:function(sender){
         gSharedEngine.playEffect(EFFECT_BUTTON_CHICK);
         
-        if(!socketLoaded) return;
+        if(!socketLoaded) {
+            return;
+        }
         this.socket = io.connect(serveurUrl);
         this.socket.on('connect', this.nodeReady);
     },
+    
     nodeReady: function()
     {
-        console.log('ready');
+        var self = menuLayer;
+        self.isPlaying = false;
         
-        var self = this;
-        this.isPlaying = false;
-        
-        this.socket.emit('waiting', { playerName : player.name });
-        this.socket.on('action', function (action)
+        self.socket.emit('waiting', { playerName : 'test' });
+        self.socket.on('action', function (action)
         {
-            console.log(action);
             self.isPlaying = true;
-            if(typeof action.end !== "undefined" && action.end !== null){
+            if(typeof action.end !== "undefined" && action.end !== null) {
                 self.isPlaying = false;
             }
         });
@@ -71,8 +77,11 @@ var MenuLayer = cc.Layer.extend({
     }
 });
 
-var PugilismScene = cc.Scene.extend({
-    onEnter:function () {
+var menuLayer,
+    PugilismScene = cc.Scene.extend({
+        
+    onEnter:function ()
+    {
         this._super();
 
         //gScoreData.initData();
@@ -80,8 +89,8 @@ var PugilismScene = cc.Scene.extend({
         //var spriteFrameCache = cc.SpriteFrameCache.getInstance();
         //spriteFrameCache.addSpriteFrames("res/baseResource.plist","res/baseResource.png");
 
-        var layer = new MenuLayer;
-        this.addChild(layer);
+        menuLayer = new MenuLayer;
+        this.addChild(menuLayer);
 
         //gSharedEngine.setMusicVolume(1);
         //gSharedEngine.setEffectsVolume(1);
